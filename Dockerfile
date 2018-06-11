@@ -12,7 +12,7 @@ RUN yum -y install ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/reposito
 RUN yum update -y
 RUN pip2 install --upgrade pip
 # ssdeep==3.3 and smaller doesn't work for Python2
-RUN pip2 install rarfile mock dkimpy dnspython pydns pyspf ipaddr rednose ssdeep==3.2 redis domainmagic
+RUN pip2 install rarfile mock dkimpy dnspython pydns pyspf==2.0.12t ipaddr rednose ssdeep==3.2 redis domainmagic
 RUN pip3 install --upgrade pip
 RUN pip3 install rarfile rednose  sqlalchemy python-magic pyspf py3dns mock ssdeep redis domainmagic
 ADD freshclam.conf /etc/freshclam.conf
