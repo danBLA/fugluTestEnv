@@ -13,7 +13,7 @@ RUN yum  -y install clamav clamav-scanner clamav-update clamav-data spamassassin
 #RUN pip2 install --upgrade pip
 # ssdeep==3.3 and smaller doesn't work for Python2
 RUN pip2 install rarfile mock dkimpy dnspython pydns pyspf==2.0.12t ipaddr rednose ssdeep==3.2 redis
-RUN wget https://github.com/fumail/domainmagic/archive/master.zip; unzip -e master; cd domainmagic-master/; python setup.py install --force; cd -; rm -rf domainmagic-master master.zip
+RUN wget https://gitlab.com/fumail/domainmagic/-/archive/master/domainmagic-master.zip; unzip -e domainmagic-master.zip; cd domainmagic-master/; python setup.py install --force; cd -; rm -rf domainmagic-master domainmagic-master.zip
 ADD freshclam.conf /etc/freshclam.conf
 ADD clamd.conf /etc/clamd.conf
 RUN adduser clamav && freshclam
