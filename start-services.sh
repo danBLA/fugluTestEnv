@@ -66,6 +66,7 @@ wait_for_socket () {
 startClamd=0
 startSpamd=0
 startFuglu=0
+runFreshclam=0
 if [ -z $1 ]; then
    startClamd=1
    startSpamd=1
@@ -73,8 +74,14 @@ elif [ $1 == "all" ]; then
    startClamd=1
    startSpamd=1
    startFuglu=1
+   runFreshclam=1
 elif [ $1 == "clamd" ]; then
    startClamd=1
+elif [ $1 == "freshclam" ]; then
+   runFreshclam=1
+elif [ $1 == "clamdfreshclam" ]; then
+   startClamd=1
+   runFreshclam=1
 elif [ $1 == "spamd" ]; then
    startSpamd=1
 elif [ $1 == "fuglu" ]; then
@@ -83,11 +90,14 @@ else
    echo "Error in command line arguments!"
    echo ""
    echo "USAGE: start-services.sh OPTIONS"
-   echo "       with OPTIONS: (empty) - start clamd and spamd (background)"
-   echo "                      clamd  - start clamd (background)"
-   echo "                      spamd  - start spamd (background)"
-   echo "                      fuglu  - start fuglu (foreground)"
-   echo "                      all    - start fuglu (foreground), clamd and spamd (background)"
+   echo "       with OPTIONS: (empty)          - start clamd and spamd (background)"
+   echo "                      clamd           - start clamd (background)"
+   echo "                      freshclam       - run freshclam to update ClamAV virus definitions"
+   echo "                      clamdfreshclam  - start clamd (background) after running freshclam"
+   echo "                      spamd           - start spamd (background)"
+   echo "                      fuglu           - start fuglu (foreground)"
+   echo "                      all             - start fuglu (foreground), clamd and spamd (background)"
+   echo "                                                                  and run freshclam"
    exit 1
 fi
 
@@ -97,6 +107,11 @@ echo "------------------------"
 echo "- start-services: todo -"
 echo "------------------------"
 echo ""
+if [ $runFreshclam -eq 1 ]; then
+   echo "- run freshclam to update ClamAV virus definitions"
+else
+   echo "- (no clamAV virus definition update)"
+fi
 if [ $startClamd -eq 1 ]; then
    echo "- start clamd"
 else
@@ -115,7 +130,7 @@ fi
 echo ""
 
 
-if [ $startClamd -eq 1 ]; then
+if [ $runFreshclam -eq 1 ]; then
     # There seems to be a problem when running in privileged containers
     # therefore to make this sript work in a docker-in-docker container
     # the executable has to be moved from its original location to avoid
@@ -129,6 +144,15 @@ if [ $startClamd -eq 1 ]; then
     # https://github.com/moby/moby/issues/9547
     sleep 1
     /usr/local/bin/freshclam
+fi
+
+if [ $startClamd -eq 1 ]; then
+    # There seems to be a problem when running in privileged containers
+    # therefore to make this sript work in a docker-in-docker container
+    # the executable has to be moved from its original location to avoid
+    # an shared library access permission error, see
+    # https://github.com/moby/moby/issues/14140
+    # https://github.com/moby/moby/issues/5490
 
     mkdir -p /var/run/clamav
     chmod a=rwx /var/run/clamav
