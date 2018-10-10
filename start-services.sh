@@ -129,17 +129,23 @@ else
 fi
 echo ""
 
+# There seems to be a problem when running in privileged containers
+# therefore to make this sript work in a docker-in-docker container
+# the executable has to be moved from its original location to avoid
+# an shared library access permission error, see
+# https://github.com/moby/moby/issues/14140
+# https://github.com/moby/moby/issues/5490
+if [ -f /usr/bin/freshclam ]; then
+   mv -f /usr/bin/freshclam /usr/local/bin/freshclam
+fi
+
+if [ ! -f /usr/sbin/clamd ]; then
+   mv -f /usr/sbin/clamd /usr/local/bin/clamd
+fi
 
 if [ $runFreshclam -eq 1 ]; then
-    # There seems to be a problem when running in privileged containers
-    # therefore to make this sript work in a docker-in-docker container
-    # the executable has to be moved from its original location to avoid
-    # an shared library access permission error, see
-    # https://github.com/moby/moby/issues/14140
-    # https://github.com/moby/moby/issues/5490
 
     echo "update clamd virus definitions"
-    mv /usr/bin/freshclam /usr/local/bin/freshclam
     # sleep for one second to avoid "text file busy" - problem
     # https://github.com/moby/moby/issues/9547
     sleep 1
@@ -147,13 +153,6 @@ if [ $runFreshclam -eq 1 ]; then
 fi
 
 if [ $startClamd -eq 1 ]; then
-    # There seems to be a problem when running in privileged containers
-    # therefore to make this sript work in a docker-in-docker container
-    # the executable has to be moved from its original location to avoid
-    # an shared library access permission error, see
-    # https://github.com/moby/moby/issues/14140
-    # https://github.com/moby/moby/issues/5490
-
     mkdir -p /var/run/clamav
     chmod a=rwx /var/run/clamav
 
@@ -165,7 +164,6 @@ if [ $startClamd -eq 1 ]; then
 
     if [ -z "$(ps -ef | grep -i 'clamd' | tail -n +2)" ]; then
        echo "clamd not running"
-       mv /usr/sbin/clamd /usr/local/bin/clamd
        sleep 1
 
        if [ $createlog -eq 1 ]; then
