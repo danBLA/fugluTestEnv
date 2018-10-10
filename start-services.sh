@@ -139,7 +139,7 @@ if [ -f /usr/bin/freshclam ]; then
    mv -f /usr/bin/freshclam /usr/local/bin/freshclam
 fi
 
-if [ ! -f /usr/sbin/clamd ]; then
+if [ -f /usr/sbin/clamd ]; then
    mv -f /usr/sbin/clamd /usr/local/bin/clamd
 fi
 
