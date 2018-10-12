@@ -101,6 +101,14 @@ else
    exit 1
 fi
 
+echo ""
+echo "-----------------------------------"
+echo "- Localhost aliases in /etc/hosts -"
+echo "-----------------------------------"
+echo ""
+echo "127.0.0.1	clamd" >> /etc/hosts
+echo "127.0.0.1	spamd" >> /etc/hosts
+
 
 echo ""
 echo "------------------------"
