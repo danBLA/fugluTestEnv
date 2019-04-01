@@ -74,6 +74,10 @@ elif [ $1 == "all" ]; then
    startClamd=1
    startSpamd=1
    startFuglu=1
+elif [ $1 == "allwithfreshclam" ]; then
+   startClamd=1
+   startSpamd=1
+   startFuglu=1
    runFreshclam=1
 elif [ $1 == "clamd" ]; then
    startClamd=1

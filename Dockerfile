@@ -22,8 +22,8 @@ ADD freshclam.conf /etc/freshclam.conf
 ADD clamd.conf /etc/clamd.conf
 RUN adduser clamav && freshclam
 ADD start-services.sh /usr/local/bin/start-services.sh
-# update virus definitions
-RUN /usr/local/bin/start-services.sh freshclam
+# update virus definitions (atm it is getting stuck 7.3.2019, so skip)
+#RUN /usr/local/bin/start-services.sh freshclam
 
 CMD ["/bin/bash"]
 VOLUME /fuglu-src
