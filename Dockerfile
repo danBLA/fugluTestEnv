@@ -6,7 +6,7 @@ MAINTAINER danBLA <danBLA@users.noreply.github.com>
 #        => NOTE: not all versions working...
 RUN yum  -y groupinstall "Development Tools"
 RUN yum  -y install epel-release
-RUN yum  -y install clamav clamav-scanner clamav-update clamav-data spamassassin python-magic git python-setuptools python-nose unar python-sqlalchemy python-pip postfix python36 python36-nose python36-pip libffi-devel python-devel python-pip ssdeep-devel ssdeep-libs python36-devel wget libxml2
+RUN yum  -y install clamav clamav-scanner clamav-update clamav-data spamassassin python-magic git python-setuptools python-nose unar python-sqlalchemy python-pip postfix python36 python36-nose python36-pip libffi-devel python-devel python-pip ssdeep-devel ssdeep-libs python36-devel wget libxml2 python2-cryptography python36-cryptography
 #unfortunately, unrar is no longer available in EPEL https://github.com/fumail/fuglu/issues/87
 #RUN yum -y install ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/Kenzy:/modified:/C7/CentOS_7/x86_64/unrar-5.0.12-2.1.x86_64.rpm
 RUN wget https://www.rarlab.com/rar/rarlinux-x64-5.6.0.tar.gz; tar -zxf rarlinux-x64-5.6.0.tar.gz; cd rar; cp -v rar unrar /usr/local/bin/; cd -
