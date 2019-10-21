@@ -182,8 +182,8 @@ if [ $startClamd -eq 1 ]; then
           /usr/local/bin/clamd -c /etc/clamd.conf --foreground=yes > clamd.log 2>&1 &
           # wait for something to apper in the log file
           # args: filename, number of tries, time to wait between tries
-          wait_for_file clamd.log 12 5
-          wait_for_socket /var/run/clamav/clamd.ctl 12 5
+          wait_for_file clamd.log 360 5
+          wait_for_socket /var/run/clamav/clamd.ctl 360 5
        else
           echo "start clamd without waiting"
           /usr/local/bin/clamd -c /etc/clamd.conf --foreground=yes > /dev/null 2>&1 &
@@ -201,7 +201,7 @@ if [ $startSpamd -eq 1 ]; then
           spamd  > spamd.log 2>&1 &
           # wait for something to apper in the log file
           # args: filename, number of tries, time to wait between tries
-          wait_for_file spamd.log 12 5
+          wait_for_file spamd.log 360 5
        else
           echo "start spamd without waiting"
           spamd  > /dev/null 2>&1 &
